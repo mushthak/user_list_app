@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:user_list_app/features/user_list/data/datasources/user_local_data_source.dart';
-import 'package:user_list_app/features/user_list/data/models/user_model.dart';
 
 void main() {
   late UserLocalDataSourceImpl dataSource;
