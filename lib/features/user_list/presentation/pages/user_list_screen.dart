@@ -25,7 +25,7 @@ class _UserListScreenState extends State<UserListScreen> {
   void _showAddUserDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Add New User'),
         content: TextField(
           controller: _nameController,
@@ -35,7 +35,7 @@ class _UserListScreenState extends State<UserListScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           TextButton(

@@ -15,6 +15,14 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   bool _isInitialized = false;
   final _logger = Logger();
 
+  UserLocalDataSourceImpl();
+
+  // Test constructor
+  UserLocalDataSourceImpl.test(Database database) {
+    _database = database;
+    _isInitialized = true;
+  }
+
   Future<void> init() async {
     if (_isInitialized) return;
 
