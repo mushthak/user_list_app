@@ -106,7 +106,6 @@ class _UserListScreenState extends State<UserListScreen> {
                 onDismissed: (_) => controller.deleteUser(user.id),
                 child: ListTile(
                   title: Text(user.displayName),
-                  selected: user.isSelected,
                 ),
               );
             },
