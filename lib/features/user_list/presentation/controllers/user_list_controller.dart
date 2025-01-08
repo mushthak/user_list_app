@@ -1,13 +1,24 @@
-import 'package:flutter/foundation.dart';
-import '../../domain/repositories/user_repository.dart';
+import '../../../../core/base/base_view_model.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../../domain/usecases/add_user.dart';
+import '../../domain/usecases/delete_user.dart';
+import '../../domain/usecases/get_users.dart';
 import '../models/user_view_model.dart';
 import '../state/user_list_state.dart';
 
-class UserListController extends ChangeNotifier {
-  final UserRepository _repository;
+class UserListController extends BaseViewModel {
+  final GetUsers _getUsers;
+  final AddUser _addUser;
+  final DeleteUser _deleteUser;
   UserListState _state = const UserListState();
 
-  UserListController(this._repository);
+  UserListController({
+    required GetUsers getUsers,
+    required AddUser addUser,
+    required DeleteUser deleteUser,
+  })  : _getUsers = getUsers,
+        _addUser = addUser,
+        _deleteUser = deleteUser;
 
   UserListState get state => _state;
 
@@ -15,12 +26,12 @@ class UserListController extends ChangeNotifier {
     _state = _state.copyWith(status: UserListStatus.loading);
     notifyListeners();
 
-    final result = await _repository.getUsers();
+    final result = await _getUsers(const NoParams());
     result.fold(
       (failure) {
         _state = _state.copyWith(
           status: UserListStatus.failure,
-          errorMessage: 'Failed to load users',
+          errorMessage: failure.message,
         );
       },
       (users) {
@@ -36,11 +47,11 @@ class UserListController extends ChangeNotifier {
   Future<void> addUser(String name) async {
     if (name.isEmpty) return;
 
-    final result = await _repository.addUser(name);
+    final result = await _addUser(name);
     result.fold(
       (failure) {
         _state = _state.copyWith(
-          errorMessage: 'Failed to add user',
+          errorMessage: failure.message,
         );
       },
       (user) {
@@ -54,11 +65,11 @@ class UserListController extends ChangeNotifier {
   }
 
   Future<void> deleteUser(int id) async {
-    final result = await _repository.deleteUser(id);
+    final result = await _deleteUser(id);
     result.fold(
       (failure) {
         _state = _state.copyWith(
-          errorMessage: 'Failed to delete user',
+          errorMessage: failure.message,
         );
       },
       (_) {

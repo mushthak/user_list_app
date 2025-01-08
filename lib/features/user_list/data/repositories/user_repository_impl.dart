@@ -15,7 +15,7 @@ class UserRepositoryImpl implements UserRepository {
       final users = await localDataSource.getUsers();
       return Right(users);
     } catch (e) {
-      return Left(DatabaseFailure());
+      return Left(DatabaseFailure('Failed to fetch users: ${e.toString()}'));
     }
   }
 
@@ -25,7 +25,7 @@ class UserRepositoryImpl implements UserRepository {
       final user = await localDataSource.addUser(name);
       return Right(user);
     } catch (e) {
-      return Left(DatabaseFailure());
+      return Left(DatabaseFailure('Failed to add user: ${e.toString()}'));
     }
   }
 
@@ -35,7 +35,7 @@ class UserRepositoryImpl implements UserRepository {
       await localDataSource.deleteUser(id);
       return const Right(null);
     } catch (e) {
-      return Left(DatabaseFailure());
+      return Left(DatabaseFailure('Failed to delete user: ${e.toString()}'));
     }
   }
 }

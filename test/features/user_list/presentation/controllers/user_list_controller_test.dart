@@ -5,6 +5,9 @@ import 'package:dartz/dartz.dart';
 import 'package:user_list_app/core/error/failures.dart';
 import 'package:user_list_app/features/user_list/domain/entities/user.dart';
 import 'package:user_list_app/features/user_list/domain/repositories/user_repository.dart';
+import 'package:user_list_app/features/user_list/domain/usecases/add_user.dart';
+import 'package:user_list_app/features/user_list/domain/usecases/delete_user.dart';
+import 'package:user_list_app/features/user_list/domain/usecases/get_users.dart';
 import 'package:user_list_app/features/user_list/presentation/controllers/user_list_controller.dart';
 import 'package:user_list_app/features/user_list/presentation/state/user_list_state.dart';
 
@@ -17,7 +20,11 @@ void main() {
 
   setUp(() {
     mockRepository = MockUserRepository();
-    controller = UserListController(mockRepository);
+    controller = UserListController(
+      getUsers: GetUsers(mockRepository),
+      addUser: AddUser(mockRepository),
+      deleteUser: DeleteUser(mockRepository),
+    );
   });
 
   group('loadUsers', () {
@@ -43,8 +50,8 @@ void main() {
     test('should update state to loading then failure when repository fails',
         () async {
       // arrange
-      when(mockRepository.getUsers())
-          .thenAnswer((_) async => Left(DatabaseFailure()));
+      when(mockRepository.getUsers()).thenAnswer(
+          (_) async => Left(DatabaseFailure('Failed to load users')));
 
       // act
       await controller.loadUsers();
@@ -77,7 +84,7 @@ void main() {
     test('should update error message when repository fails', () async {
       // arrange
       when(mockRepository.addUser(any))
-          .thenAnswer((_) async => Left(DatabaseFailure()));
+          .thenAnswer((_) async => Left(DatabaseFailure('Failed to add user')));
 
       // act
       await controller.addUser(tName);
@@ -112,8 +119,8 @@ void main() {
 
     test('should update error message when repository fails', () async {
       // arrange
-      when(mockRepository.deleteUser(any))
-          .thenAnswer((_) async => Left(DatabaseFailure()));
+      when(mockRepository.deleteUser(any)).thenAnswer(
+          (_) async => Left(DatabaseFailure('Failed to delete user')));
 
       // act
       await controller.deleteUser(tId);

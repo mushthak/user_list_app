@@ -51,7 +51,8 @@ void main() {
 
         // assert
         verify(mockLocalDataSource.getUsers());
-        expect(result, equals(Left(DatabaseFailure())));
+        expect(result,
+            equals(Left(DatabaseFailure('Failed to fetch users: Exception'))));
       },
     );
   });
@@ -86,7 +87,8 @@ void main() {
 
         // assert
         verify(mockLocalDataSource.addUser(tName));
-        expect(result, equals(Left(DatabaseFailure())));
+        expect(result,
+            equals(Left(DatabaseFailure('Failed to add user: Exception'))));
       },
     );
   });
@@ -120,7 +122,8 @@ void main() {
 
         // assert
         verify(mockLocalDataSource.deleteUser(tId));
-        expect(result, equals(Left(DatabaseFailure())));
+        expect(result,
+            equals(Left(DatabaseFailure('Failed to delete user: Exception'))));
       },
     );
   });
