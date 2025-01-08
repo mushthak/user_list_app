@@ -16,6 +16,11 @@ class MockUserListController extends Mock implements UserListController {
     _state = newState;
     notifyListeners();
   }
+
+  @override
+  Future<void> loadUsers() async {
+    return Future.value();
+  }
 }
 
 void main() {

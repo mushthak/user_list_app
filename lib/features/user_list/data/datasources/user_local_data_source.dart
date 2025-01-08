@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:logger/logger.dart';
 import '../models/user_model.dart';
 
 abstract class UserLocalDataSource {
@@ -12,6 +13,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   late Database _database;
   static const String tableName = 'users';
   bool _isInitialized = false;
+  final _logger = Logger();
 
   Future<void> init() async {
     if (_isInitialized) return;
@@ -32,7 +34,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
       _isInitialized = true;
     } catch (e) {
-      print('Database initialization error: $e');
+      _logger.e('Database initialization error', error: e);
       rethrow;
     }
   }
@@ -50,7 +52,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       final List<Map<String, dynamic>> maps = await _database.query(tableName);
       return List.generate(maps.length, (i) => UserModel.fromJson(maps[i]));
     } catch (e) {
-      print('Error getting users: $e');
+      _logger.e('Error getting users', error: e);
       rethrow;
     }
   }
@@ -66,7 +68,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       );
       return UserModel(id: id, name: name);
     } catch (e) {
-      print('Error adding user: $e');
+      _logger.e('Error adding user', error: e);
       rethrow;
     }
   }
@@ -81,7 +83,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
         whereArgs: [id],
       );
     } catch (e) {
-      print('Error deleting user: $e');
+      _logger.e('Error deleting user', error: e);
       rethrow;
     }
   }
