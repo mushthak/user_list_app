@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/config/environment.dart';
+import 'core/config/theme.dart';
 import 'injection_container.dart' as di;
 import 'features/user_list/presentation/controllers/user_list_controller.dart';
 import 'features/user_list/presentation/pages/user_list_screen.dart';
@@ -26,10 +27,10 @@ class MainApp extends StatelessWidget {
       create: (_) => di.sl<UserListController>(),
       child: MaterialApp(
         title: 'User List App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          useMaterial3: true,
-        ),
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode:
+            ThemeMode.system, // Automatically use light/dark based on system
         home: const UserListScreen(),
       ),
     );
