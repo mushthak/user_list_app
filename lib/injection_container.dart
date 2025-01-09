@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'core/config/environment.dart';
-import 'features/user_list/data/datasources/user_cache.dart';
 import 'features/user_list/data/datasources/user_local_data_source.dart';
 import 'features/user_list/data/repositories/user_repository_impl.dart';
 import 'features/user_list/domain/repositories/user_repository.dart';
@@ -40,8 +39,6 @@ Future<void> _initUserFeature() async {
   );
 
   // Data Sources
-  sl.registerLazySingleton<UserCache>(() => UserCacheImpl());
-
   final dataSource = UserLocalDataSourceImpl();
   await dataSource.init();
   sl.registerLazySingleton<UserLocalDataSource>(() => dataSource);
