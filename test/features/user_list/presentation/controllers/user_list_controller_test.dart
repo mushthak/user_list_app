@@ -51,7 +51,7 @@ void main() {
         () async {
       // arrange
       when(mockRepository.getUsers()).thenAnswer(
-          (_) async => Left(DatabaseFailure('Failed to load users')));
+          (_) async => const Left(DatabaseFailure('Failed to load users')));
 
       // act
       await controller.loadUsers();
@@ -83,8 +83,8 @@ void main() {
 
     test('should update error message when repository fails', () async {
       // arrange
-      when(mockRepository.addUser(any))
-          .thenAnswer((_) async => Left(DatabaseFailure('Failed to add user')));
+      when(mockRepository.addUser(any)).thenAnswer(
+          (_) async => const Left(DatabaseFailure('Failed to add user')));
 
       // act
       await controller.addUser(tName);
@@ -120,7 +120,7 @@ void main() {
     test('should update error message when repository fails', () async {
       // arrange
       when(mockRepository.deleteUser(any)).thenAnswer(
-          (_) async => Left(DatabaseFailure('Failed to delete user')));
+          (_) async => const Left(DatabaseFailure('Failed to delete user')));
 
       // act
       await controller.deleteUser(tId);

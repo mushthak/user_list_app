@@ -12,7 +12,8 @@ class AddUser implements UseCase<User, String> {
   @override
   Future<Either<Failure, User>> call(String name) {
     if (name.isEmpty) {
-      return Future.value(Left(ValidationFailure('Name cannot be empty')));
+      return Future.value(
+          const Left(ValidationFailure('Name cannot be empty')));
     }
     return repository.addUser(name);
   }

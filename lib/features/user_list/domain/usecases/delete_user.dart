@@ -11,7 +11,7 @@ class DeleteUser implements UseCase<void, int> {
   @override
   Future<Either<Failure, void>> call(int id) {
     if (id <= 0) {
-      return Future.value(Left(ValidationFailure('Invalid user ID')));
+      return Future.value(const Left(ValidationFailure('Invalid user ID')));
     }
     return repository.deleteUser(id);
   }
